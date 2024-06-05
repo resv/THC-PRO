@@ -1467,11 +1467,11 @@ $AppGDescription = "Process Monitor"
 
 $AppGFolder = "Procmon"
         # URLs
-        $AppGURLMain = "https://live.sysinternals.com/autoruns.exe"
-        $AppGURLMirror = "https://github.com/resv/THC-MIRROR-APPS/raw/main/Autoruns/autoruns.exe"
+        $AppGURLMain = "https://live.sysinternals.com/Procmon.exe"
+        $AppGURLMirror = "https://github.com/resv/THC-MIRROR-APPS/raw/main/Procmon/Procmon.exe"
            
-    $AppGHashMain = "F41051697B220757F3612ECD00749B952CE7BCAADD9DC782D79EF0338E45C3B6"
-    $AppGHashMirror = "F41051697B220757F3612ECD00749B952CE7BCAADD9DC782D79EF0338E45C3B6"
+    $AppGHashMain = "CFAC057C0C811CAA0FFA8581B7E7E7A2B1C6F3CE8A2EC1D05151A0A2B7DD173E"
+    $AppGHashMirror = "CFAC057C0C811CAA0FFA8581B7E7E7A2B1C6F3CE8A2EC1D05151A0A2B7DD173E"
 
     # VARIABLES G - Status notifications
     $StatusGDetectedExisting = ">>> [ Detected existing $AppGName files in $UserDesktopPath\$ParentFolder\$AppGFolder ]`n"
