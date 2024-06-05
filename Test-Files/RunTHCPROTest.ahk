@@ -7,7 +7,7 @@ Send, cd .\Desktop\THC-PRO
 Sleep, 100
 Send, {Enter}
 Sleep, 100
-Send, .\THC-PRO.ps1
+Send, powershell.exe -noprofile -executionpolicy bypass -file .\THC-PRO.ps1
 Sleep, 100
 Send, {Enter}
 Sleep, 500

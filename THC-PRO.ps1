@@ -27,71 +27,6 @@ $Banner4of4= @"
 _________________________________________________________________________________`n
 "@   
 
-
-
-$BannerA = @"
-_________________________________________________________________________________
-                    __  ______  ___________   _____   ____________ 
-                   / / / / __ \/ ___/_  __/  /  _/ | / / ____/ __ \
-                  / /_/ / / / /\__ \ / /     / //  |/ / /_  / / / /
-                 / __  / /_/ /___/ // /    _/ // /|  / __/ / /_/ / 
-                /_/ /_/\____//____//_/    /___/_/ |_/_/    \____/   
-_________________________________________________________________________________`n
-"@
-
-$BannerB = @"
-_________________________________________________________________________________
-                       _______  _______ __  _______  _   __
-                      / ___/\ \/ / ___//  |/  / __ \/ | / /
-                      \__ \  \  /\__ \/ /|_/ / / / /  |/ / 
-                     ___/ /  / /___/ / /  / / /_/ / /|  /  
-                    /____/  /_//____/_/  /_/\____/_/ |_/
-_________________________________________________________________________________`n
-"@
-
-$BannerC = @"
-_________________________________________________________________________________
-        ____  ________________     ____  __    __  ________   ________    ____
-       / __ \/ ____/ ____/ __ \   / __ )/ /   / / / / ____/  / ____/ /   /  _/
-      / / / / __/ / __/ / /_/ /  / __  / /   / / / / __/    / /   / /    / /  
-     / /_/ / /___/ /___/ ____/  / /_/ / /___/ /_/ / /___   / /___/ /____/ /   
-    /_____/_____/_____/_/      /_____/_____/\____/_____/   \____/_____/___/
-_________________________________________________________________________________`n
-"@
-
-$BannerF = @"
-_________________________________________________________________________________
-                    ___   __  ____________  ____  __  ___   _______
-                   /   | / / / /_  __/ __ \/ __ \/ / / / | / / ___/
-                  / /| |/ / / / / / / / / / /_/ / / / /  |/ /\__ \ 
-                 / ___ / /_/ / / / / /_/ / _, _/ /_/ / /|  /___/ / 
-                /_/  |_\____/ /_/  \____/_/ |_|\____/_/ |_//____/
-_________________________________________________________________________________`n
-"@
-
-$BannerE = @"
-_________________________________________________________________________________
-                            __________  ____ 
-                           / ____/ __ \/ __ \
-                          / __/ / / / / /_/ /
-                         / /___/ /_/ / _, _/ 
-                        /_____/_____/_/ |_|  
-                      Monitored by CyberSeidon
-_________________________________________________________________________________`n
-"@
-
-$BannerX = @"
-_________________________________________________________________________________
-                   __________  _   ___________   ____________
-                  / ____/ __ \/ | / /_  __/   | / ____/_  __/
-                 / /   / / / /  |/ / / / / /| |/ /     / /   
-                / /___/ /_/ / /|  / / / / ___ / /___  / /    
-                \____/\____/_/ |_/ /_/ /_/  |_\____/ /_/
-_________________________________________________________________________________`n
-"@
-
-
-
 $HealthCheck = "False"
 
 # VARIABLES - ParentFolder
@@ -105,6 +40,15 @@ $StatusChangedDirToParentFolder = ">> [ Changed directory to $UserDesktopPath\$P
 $StatusWipeReminder = "[ Don't forget to wipe THC :) ]"
 
 # VARIABLES A - AppA (Host Info)
+$BannerA = @"
+_________________________________________________________________________________
+                    __  ______  ___________   _____   ____________ 
+                   / / / / __ \/ ___/_  __/  /  _/ | / / ____/ __ \
+                  / /_/ / / / /\__ \ / /     / //  |/ / /_  / / / /
+                 / __  / /_/ /___/ // /    _/ // /|  / __/ / /_/ / 
+                /_/ /_/\____//____//_/    /___/_/ |_/_/    \____/   
+_________________________________________________________________________________`n
+"@
     $AppAName = "Host Info"
     $AppADescription = "Enumerate Host Info"
     $Hostname = hostname
@@ -159,12 +103,30 @@ $StatusWipeReminder = "[ Don't forget to wipe THC :) ]"
 }
 
 # VARIABLES B - AppB (Sysmon)
+$BannerB = @"
+_________________________________________________________________________________
+                       _______  _______ __  _______  _   __
+                      / ___/\ \/ / ___//  |/  / __ \/ | / /
+                      \__ \  \  /\__ \/ /|_/ / / / /  |/ / 
+                     ___/ /  / /___/ / /  / / /_/ / /|  /  
+                    /____/  /_//____/_/  /_/\____/_/ |_/
+_________________________________________________________________________________`n
+"@
     $AppBName = "Sysmon"
     $AppBDescription = "logs system activity to the Windows event log"
     $AppBVersion = "xx.xx"
     $AppBFolder = "$AppBName"
 
 # VARIABLES C - AppC (DeepBlueCLI)
+$BannerC = @"
+_________________________________________________________________________________
+        ____  ________________     ____  __    __  ________   ________    ____
+       / __ \/ ____/ ____/ __ \   / __ )/ /   / / / / ____/  / ____/ /   /  _/
+      / / / / __/ / __/ / /_/ /  / __  / /   / / / / __/    / /   / /    / /  
+     / /_/ / /___/ /___/ ____/  / /_/ / /___/ /_/ / /___   / /___/ /____/ /   
+    /_____/_____/_____/_/      /_____/_____/\____/_____/   \____/_____/___/
+_________________________________________________________________________________`n
+"@
     $AppCName = "DeepBlueCLI"
     $AppCDescription = "Hunt via Windows Event Logs"
     $AppCFolder = "DeepBlueCLI"
@@ -1111,7 +1073,17 @@ function AppCWipe {
 $AppDName = "Remote Access"
 $AppDDescription = "Deploy Remote Access"
 
-# VARIABLES - AppE (EDR) ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# VARIABLES - AppE (EDR)
+$BannerE = @"
+_________________________________________________________________________________
+                            __________  ____ 
+                           / ____/ __ \/ __ \
+                          / __/ / / / / /_/ /
+                         / /___/ /_/ / _, _/ 
+                        /_____/_____/_/ |_|  
+                      Monitored by CyberSeidon
+_________________________________________________________________________________`n
+"@
 $AppEName = "EDR"
 $AppEDescription = "Endpoint Detection & Response"
 
@@ -1279,7 +1251,17 @@ function StartEDR{
     }
 
 
-# VARIABLES - AppF (Autoruns) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# VARIABLES - AppF (Autoruns)
+$BannerF = @"
+_________________________________________________________________________________
+                    ___   __  ____________  ____  __  ___   _______
+                   /   | / / / /_  __/ __ \/ __ \/ / / / | / / ___/
+                  / /| |/ / / / / / / / / / /_/ / / / /  |/ /\__ \ 
+                 / ___ / /_/ / / / / /_/ / _, _/ /_/ / /|  /___/ / 
+                /_/  |_\____/ /_/  \____/_/ |_|\____/_/ |_//____/
+_________________________________________________________________________________`n
+"@
+
 $AppFName = "Autoruns"
 $AppFDescription = "Scheduled tasks/persistence check" 
     $AppFFolder = "Autoruns"
@@ -1470,16 +1452,215 @@ until ($selectionAppFWipe -eq 'Y' -or $selectionAppFWipe -eq 'N' -or $selectionA
 }
  
 
-# VARIABLES - AppG (CTI Search Online Reputation Search) -----------------------------------------------------------------------------------------------------------------------------------------------------
-$AppGName = "CTI Search"
-$AppGDescription = "Online Reputation Searcher"
+# VARIABLES - AppG (ProcMon) -----------------------------------------------------------------------------------------------------------------------------------------------------
+$BannerG = @"
+_________________________________________________________________________________
+                  ____
+                 / __ \_________  _________ ___  ____  ____ 
+                / /_/ / ___/ __ \/ ___/ __ `__ \/ __ \/ __ \
+               / ____/ /  / /_/ / /__/ / / / / / /_/ / / / /
+              /_/   /_/   \____/\___/_/ /_/ /_/\____/_/ /_/ 
+_________________________________________________________________________________`n
+"@                     
+$AppGName = "Procmon"
+$AppGDescription = "Process Monitor"
+
+$AppGFolder = "Procmon"
+        # URLs
+        $AppGURLMain = "https://live.sysinternals.com/autoruns.exe"
+        $AppGURLMirror = "https://github.com/resv/THC-MIRROR-APPS/raw/main/Autoruns/autoruns.exe"
+           
+    $AppGHashMain = "F41051697B220757F3612ECD00749B952CE7BCAADD9DC782D79EF0338E45C3B6"
+    $AppGHashMirror = "F41051697B220757F3612ECD00749B952CE7BCAADD9DC782D79EF0338E45C3B6"
+
+    # VARIABLES G - Status notifications
+    $StatusGDetectedExisting = ">>> [ Detected existing $AppGName files in $UserDesktopPath\$ParentFolder\$AppGFolder ]`n"
+    $StatusGRemoveExisting = ">>> [ Removed existing $AppGName files in $UserDesktopPath\$ParentFolder\$AppGFolder ]`n"
+    $StatusGCreatedAppFFolder = ">>>> [ Adding new directory $UserDesktopPath\$ParentFolder\$AppGFolder ]`n"
+    $StatusGChangedDirToAppFFolder = ">>>>> [ Changed working directory to $UserDesktopPath\$ParentFolder\$AppGFolder ]`n"
+    $StatusGDownloadApp = ">>>>>> [ Downloading `"$AppGName.exe`" ]`n"
+    $StatusGHashCheck = ">>>>>>> [ Checking hash ]`n"
+    $StatusGBootUp = ">>>>>>>> [ Booting up `"$AppGName`" ]`n"
+    $StatusGReady = ">>>>>>>>> [ $AppGName is Ready for Hunting... ]`n"
+    $StatusGWipe = ">>>>>>>>>> [ Wiping $AppGName ]"
+
+# AppGMenu
+$AppGMenu = @"
+`n
+         ________[ Procmon MENU ]________
+        |                                |
+        |    [Wipe] | Wipe Procmon     |
+        |    [Exit] | Exit Hard          |
+        |    [Back] | Back to Main Menu  |
+        |________________________________|`n `n
+"@
+
+function StartProcmon($Source){   
+    #Clear
+    clear
+
+    # Make space for download status bar
+    Write-Host $StatusLoadingLineBreak
+
+    # Notify Procmon Source URL and hash based on request
+     if ($Source -eq "MAIN SOURCE"){
+        Write-Host "[MAIN SOURCE]: " -ForegroundColor Green -NoNewline; Write-Host $AppGURLMain -ForegroundColor Yellow
+        Write-Host "    [SHA-256]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppGHashMain}" -ForegroundColor Yellow `n 
+    }
+    if ($Source -eq "MIRROR SOURCE"){
+        Write-Host "[MIRROR SOURCE]: " -ForegroundColor Green -NoNewline; Write-Host $AppGURLMirror -ForegroundColor Yellow
+        Write-Host "      [SHA-256]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppGHashMirror}" -ForegroundColor Yellow `n
+    }
+
+    # Create the in ParentFolder (Also hiding the Powershell Output)
+    $null = new-item -path "$UserDesktopPath" -name $ParentFolder -itemtype directory -Force
+    Write-Host $StatusCreatedParentFolder -ForegroundColor Green
+
+    # Change the directory to ParentFolder
+    set-location "$UserDesktopPath\$ParentFolder"
+    Write-Host $StatusChangedDirToParentFolder -ForegroundColor Green
+
+    # Check existing Procmon folder, if exist, we delete for a fresh start.
+    if (Test-Path .\$AppGName) {
+        Write-Host $StatusGDetectedExisting -ForegroundColor Green
+        $null = taskkill /F /IM Procmon.exe /T
+        Start-Sleep -Seconds 2
+        Remove-Item .\$AppGName -Recurse
+        Write-Host $StatusGRemoveExisting -ForegroundColor Green
+    }
+
+    # Create new Procmon Folder, change dir to Promon folder
+    $null = New-Item -Path .\ -Name "$AppGName" -ItemType "directory" -Force
+    Write-Host $StatusGCreatedAppFFolder -ForegroundColor Green
+    set-location "$UserDesktopPath\$ParentFolder\$AppGName"
+    Write-Host $StatusFChangedDirToAppGFolder -ForegroundColor Green        
+
+    # Check for Download request
+    if ($Source -eq "MAIN SOURCE"){
+        $global:AppGURLUsed = $AppGURLMain
+        $AppGHashUsed = $AppGHashMain
+    }
+    if ($Source -eq "MIRROR SOURCE"){
+        $global:AppGURLUsed = $AppGURLMirror
+        $AppGHashUsed = $AppGHashMirror
+    }
+
+    # Download zip file from Repo
+    Write-Host $StatusGDownloadApp -ForegroundColor Green
+    Clear-Variable -Name "Source" -Scope Global
+    Invoke-WebRequest -Uri $AppGURLUsed -OutFile .\$AppGName.exe
+
+    # Download Procmon
+    Write-Host $StatusGHashCheck -ForegroundColor Green
+    $HashDownload = Get-FileHash .\$AppGName.exe | Select-Object -ExpandProperty Hash
+   
+
+        # Hash Diff Allow/Deny Progression    
+        if ($AppGHashUsed -eq $HashDownload){
+            $AppGHashValid = "True"
+            Write-Host "  [EXPECTED]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppGHashUsed}" -ForegroundColor Green
+            Write-Host "[DOWNLOADED]: " -ForegroundColor Green -NoNewline; Write-Host "{$HashDownload}" -ForegroundColor Green
+            Write-Host "              |------------------------ [ HASH VALID ] ------------------------|`n" -ForegroundColor Yellow
+        }
+        else {
+            $AppFHashValid = "False"
+            Write-Host "  [EXPECTED]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppGHashUsed}" -ForegroundColor Green
+            Write-Host "[DOWNLOADED]: " -ForegroundColor Green -NoNewline; Write-Host "{$HashDownload}" -ForegroundColor Red
+            Write-Host "              |---------------------- [ HASH INVALID ] ----------------------|`n" -ForegroundColor Red
+            Write-Host "Hash INVALID, URL possibly hijacked or updated. Removed $AppGName.exe, use MIRROR SOURCE for saftey." -ForegroundColor Red
+            set-location "$UserDesktopPath\$ParentFolder"
+            Remove-Item -Recurse -Force "$UserDesktopPath\$ParentFolder\$AppGFolder"
+            Read-Host "Press any key to return to the main menu"
+        }
+
+        if ($AppGHashValid -eq "True"){
+        # Change the directory to AppGName
+        set-location "$UserDesktopPath\$ParentFolder\$AppGFolder"
+        $HealthCheck = "True"
+        Write-Host $StatusGBootUp -ForegroundColor Green
+        Invoke-Expression .\$AppGName.exe
+        Write-Host $StatusGReady -ForegroundColor Cyan
+        AppGMenuMain
+        }
+
+        if ($AppGHashValid -eq "False"){
+        # Exit back to main menu
+        Show-Menu
+        }
+}
+
+#AppG Procmon main menu
+function AppGMenuMain{      
+    do
+    {  
+        $selectionAppG = Read-Host $BannerG $AppGmenu "$AppGName main menu, waiting for your input"
+        switch ($selectionAppG)
+        {
+            'Wipe' {
+                AppGWipe
+                Show-Menu
+            }
+            'Exit' {
+                ExitHard
+            }
+            'Back' {
+                clear
+                Show-Menu
+            }
+            '' {
+            clear
+            AppGMenuMain
+            }
+        }
+    }
+    until ($selectionAppG -eq 'Wipe'-or $selectionAppG -eq 'Back' -or $selectionAppG -eq '')
+}
+        
+# Wipe Procmon (Different format due to exe)
+function AppGWipe {
+    do
+    {
+    # Confirm user, then implement
+    $selectionAppGWipe = Read-Host "Are you sure you want to close & wipe $AppGName (Y/N)"
+    switch ($selectionAppGWipe)
+    {
+        'Y' {
+            if (Test-Path "$UserDesktopPath\$ParentFolder\$AppGFolder") {
+                Write-Host $StatusGWipe`n
+                Write-Host $StatusWipeReminder -ForegroundColor DarkMagenta -Background Yellow
+                set-location "$UserDesktopPath\$ParentFolder"
+                $null = taskkill /F /IM Procmon.exe /T  
+                Start-Sleep -Seconds 2
+                Remove-Item -Recurse -Force "$UserDesktopPath\$ParentFolder\$AppGFolder"
+                }
+        } 
+        'N' {
+            clear
+            AppGMenuMain
+        }
+        '' {
+            AppGWipe
+        }
+    }
+ }
+until ($selectionAppGWipe -eq 'Y' -or $selectionAppGWipe -eq 'N' -or $selectionAppGWipe -eq '')
+}                         
 
 
-# VARIABLES - AppX (More Info & Contact) ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# VARIABLES - AppX (More Info & Contact)
+$BannerX = @"
+_________________________________________________________________________________
+                   __________  _   ___________   ____________
+                  / ____/ __ \/ | / /_  __/   | / ____/_  __/
+                 / /   / / / /  |/ / / / / /| |/ /     / /   
+                / /___/ /_/ / /|  / / / / ___ / /___  / /    
+                \____/\____/_/ |_/ /_/ /_/  |_\____/ /_/
+_________________________________________________________________________________`n
+"@
 $AppXName = "Contact"
 $AppXDescription = "More Info & Contact"
 $AppXVersion = "Alpha 1.0"
-$AppxReleaseDate = "XX/xx/24"
+$AppxReleaseDate = "6/3/24"
 $AppXNotes = @"
 All mirrors are direct copies from official sources and hosted on my github. 
 Use a mirror if the main source is down or if they have updated their APP/URL`n
@@ -1637,7 +1818,12 @@ do
         StartAutoruns($Source)
         }
         'G' {
-        'CTI SEARCH'
+        $global:Source = "MAIN SOURCE"
+        StartProcMon($Source)
+        }
+        'GG'{
+        $global:Source = "MIRROR SOURCE"
+        StartProMon($Source)
         }
         'X' {
             Clear-Host
