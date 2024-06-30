@@ -1158,12 +1158,12 @@ function AppDRemoteAccessInstall($AppDOrgKey, $Source){
             }
             if ($AppDOrgKey -eq "EW"){
                 $AppDURLMain = "https://app.action1.com/agent/ca8e96b4-32f6-11ee-9ea7-83eb080d2617/Windows/agent(EW_-_EDMOND_WONG).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "75587616020A06E3F08F9D93F537828DEE5626C93A24B5312274EC239957CEE8"
                 $AppDAgentFileName = "action1_agent(EW_-_EDMOND_WONG)"
             }
             if ($AppDOrgKey -eq "GP"){
                 $AppDURLMain = "https://app.action1.com/agent/f82c7ce4-9c3c-11ee-92f1-3b9755e10bac/Windows/agent(GP_-_GRACE_PARK).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "13AD3A6AFCDCF2A17C2BE2CD1747FC1B2E9402F02877E6FA7069DEF394DC95DE"
                 $AppDAgentFileName = "action1_agent(GP_-_GRACE_PARK)"
             }
             if ($AppDOrgKey -eq "IC"){
@@ -1173,95 +1173,95 @@ function AppDRemoteAccessInstall($AppDOrgKey, $Source){
             }
             if ($AppDOrgKey -eq "JG"){
                 $AppDURLMain = "https://app.action1.com/agent/a299a104-ec41-11ed-adbb-23da6e95e2ea/Windows/agent(JG_-_JASON_GREENBERG).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "8144E2C65A4DDA569FF76B6462672A465FD4FC060997FB41F0366DB106688510"
                 $AppDAgentFileName = "action1_agent(JG_-_JASON_GREENBERG)"
             }
             if ($AppDOrgKey -eq "JM"){
                 $AppDURLMain = "https://app.action1.com/agent/cc7510a4-feaf-11ee-ad29-119b83a5aae4/Windows/agent(JM_-_JUDY_MOCK).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "FFC57D3CAAAEEF866B4482C8E1497CEA1D53E749A88F03A2A901797A3330B76D"
                 $AppDAgentFileName = "action1_agent(JM_-_JUDY_MOCK)"
             }
             if ($AppDOrgKey -eq "KnA"){
                 $AppDURLMain = "https://app.action1.com/agent/69a4c614-c336-11ed-9871-35b181befa3f/Windows/agent(KnA_-_KIM_ASSOCIATES).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "1E8A7050FB782EC3F8AF859813529E0BB74F9AA2A60F96E5CE7A80E50470ED6E"
                 $AppDAgentFileName = "action1_agent(KnA_-_KIM_ASSOCIATES)"
             }
             if ($AppDOrgKey -eq "PMC"){
                 $AppDURLMain = "https://app.action1.com/agent/7c20e9a4-b4b7-11ed-a067-bd7ac9f64a19/Windows/agent(PMC_-_PALISADES_MEDICAL_CENTER).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "19EB342EE269D211906E3D926045964EBE3CCD52D89F17FA733D8D24A082637A"
                 $AppDAgentFileName = "action1_agent(PMC_-_PALISADES_MEDICAL_CENTER)"
             }
             if ($AppDOrgKey -eq "RR"){
                 $AppDURLMain = "https://app.action1.com/agent/e2222381-865e-11ee-9dcf-67aae8813155/Windows/agent(RR_-_RAPID_RESPONSE).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "49D3C700AF0601BA5A3311A877DA13CE67785BD67E11B386FA090A785A788672"
                 $AppDAgentFileName = "action1_agent(RR_-_RAPID_RESPONSE)"
             }
             if ($AppDOrgKey -eq "SB"){
                 $AppDURLMain = "https://app.action1.com/agent/580d1074-33f5-11ef-95f6-abb932ce4201/Windows/agent(SB_-_SANDBOX).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "388217B0619AC7B4599FF7A30ED0A4D3928DA0A60EDD90A549519E91C18DDE52"
                 $AppDAgentFileName = "action1_agent(SB_-_SANDBOX)"
             }
             if ($AppDOrgKey -eq "SY"){
                 $AppDURLMain = "https://app.action1.com/agent/cd55fad3-5a58-11ee-a0f9-916686d13b73/Windows/agent(SY_-_SUYON_YI).msi"
-                $AppDHashMain = ""
+                $AppDHashMain = "06D92FFC185F9E7768F831845428B0E5E6D9C3D58910A2AAF31AD252A132116D"
                 $AppDAgentFileName = "action1_agent(SY_-_SUYON_YI)"
             }
         }
         # Mirror Source will follow this flow
          if ($Source -eq "MIRROR SOURCE"){
             if ($AppDOrgKey -eq "AK"){
-                $AppDURLMain = "https://app.action1.com/agent/bd9e9504-b40b-11ed-9c60-5b71e351ba63/Windows/agent(AK_-_ADAM_KIM).msi"
-                $AppDHashMain = "064768699B50DF63FC34D176B6062FF23D58074639CC4E2550B08B5C33C67AFB"
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(AK_-_ADAM_KIM).msi"
+                $AppDHashMirror = "064768699B50DF63FC34D176B6062FF23D58074639CC4E2550B08B5C33C67AFB"
                 $AppDAgentFileName = "action1_agent(AK_-_ADAM_KIM)"
             }
             if ($AppDOrgKey -eq "EW"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(EW_-_EDMOND_WONG).msi"
+                $AppDHashMirror = "75587616020A06E3F08F9D93F537828DEE5626C93A24B5312274EC239957CEE8"
                 $AppDAgentFileName = "action1_agent(EW_-_EDMOND_WONG)"
             }
             if ($AppDOrgKey -eq "GP"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(GP_-_GRACE_PARK).msi"
+                $AppDHashMirror = "13AD3A6AFCDCF2A17C2BE2CD1747FC1B2E9402F02877E6FA7069DEF394DC95DE"
                 $AppDAgentFileName = "action1_agent(GP_-_GRACE_PARK)"
             }
             if ($AppDOrgKey -eq "IC"){
-                $AppDURLMain = ""
-                $AppDHashMain = "94222009F399CB90F9221484A0A65CAF3DF6C13F83346CDC6E1AF279E3C63E8E"
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(IC-_INDIVIDUAL_CLIENTS).msi"
+                $AppDHashMirror = "94222009F399CB90F9221484A0A65CAF3DF6C13F83346CDC6E1AF279E3C63E8E"
                 $AppDAgentFileName = "action1_agent(IC-_INDIVIDUAL_CLIENTS)"
             }
             if ($AppDOrgKey -eq "JG"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(JG_-_JASON_GREENBERG).msi"
+                $AppDHashMirror = "8144E2C65A4DDA569FF76B6462672A465FD4FC060997FB41F0366DB106688510"
                 $AppDAgentFileName = "action1_agent(JG_-_JASON_GREENBERG)"
             }
             if ($AppDOrgKey -eq "JM"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(JM_-_JUDY_MOCK).msi"
+                $AppDHashMirror = "FFC57D3CAAAEEF866B4482C8E1497CEA1D53E749A88F03A2A901797A3330B76D"
                 $AppDAgentFileName = "action1_agent(JM_-_JUDY_MOCK)"
             }
             if ($AppDOrgKey -eq "KnA"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(KnA_-_KIM_ASSOCIATES).msi"
+                $AppDHashMirror = "1E8A7050FB782EC3F8AF859813529E0BB74F9AA2A60F96E5CE7A80E50470ED6E"
                 $AppDAgentFileName = "action1_agent(KnA_-_KIM_ASSOCIATES)"
             }
             if ($AppDOrgKey -eq "PMC"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(PMC_-_PALISADES_MEDICAL_CENTER).msi"
+                $AppDHashMirror = "19EB342EE269D211906E3D926045964EBE3CCD52D89F17FA733D8D24A082637A"
                 $AppDAgentFileName = "action1_agent(PMC_-_PALISADES_MEDICAL_CENTER)"
             }
             if ($AppDOrgKey -eq "RR"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(RR_-_RAPID_RESPONSE).msi"
+                $AppDHashMirror = "49D3C700AF0601BA5A3311A877DA13CE67785BD67E11B386FA090A785A788672"
                 $AppDAgentFileName = "action1_agent(RR_-_RAPID_RESPONSE)"
             }
             if ($AppDOrgKey -eq "SB"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(SB_-_SANDBOX).msi"
+                $AppDHashMirror = "388217B0619AC7B4599FF7A30ED0A4D3928DA0A60EDD90A549519E91C18DDE52"
                 $AppDAgentFileName = "action1_agent(SB_-_SANDBOX)"
             }
             if ($AppDOrgKey -eq "SY"){
-                $AppDURLMain = ""
-                $AppDHashMain = ""
+                $AppDURLMirror = "https://github.com/resv/THC-PRO/raw/main/THC-PRO-Mirror-Apps/RemoteAccess/action1_agent(SY_-_SUYON_YI).msi"
+                $AppDHashMirror = "06D92FFC185F9E7768F831845428B0E5E6D9C3D58910A2AAF31AD252A132116D"
                 $AppDAgentFileName = "action1_agent(SY_-_SUYON_YI)"
             }
         }
