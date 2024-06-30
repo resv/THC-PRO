@@ -1,6 +1,10 @@
  
 #Enable this script only: powershell.exe -noprofile -executionpolicy bypass -file .\THC-PRO.ps1
 #(go down to execution line)
+#for quicker testing: 
+    #Get status: Get-ExecutionPolicy
+    #Set status unrestricted/remotesigned: Set-ExecutionPolicy RemoteSigned
+    #Set status back to restricted: Set-ExecutionPolicy Res
 ##Good quick info, implement later for hunters  https://mahim-firoj.medium.com/incident-response-and-threat-hunting-using-deepbluecli-tool-bf5d4c52c8a8
 
 # VARIABLES - BANNERS
@@ -1084,17 +1088,13 @@ ________________________________________________________________________________
 "@
 
 # VARIABLES D
-$AppDName = "RemoteAccess"
+$AppDName = "Remote Access"
 $AppDDescription = "Deploy Remote Access"
-    $AppDFolder = "Remote Access"
-    # URLs                 
-            $AppDURLMainAK = "https://app.action1.com/agent/bd9e9504-b40b-11ed-9c60-5b71e351ba63/Windows/agent(AK_-_PERSONAL_AND_FRIENDS).msi"
-            $AppDURLHashMainAK = "064768699B50DF63FC34D176B6062FF23D58074639CC4E2550B08B5C33C67AFB"
-            $AppDURLMirrorAK = "https://github.com/resv/THC-MIRROR-APPS/raw/main/RemoteAccess/action1_agent(AK_-_PERSONAL_AND_FRIENDS).msi"
-            $AppDURLHashMirrorAK = "064768699B50DF63FC34D176B6062FF23D58074639CC4E2550B08B5C33C67AFB"
-
+    $AppDFolder = "RemoteAccess"
+    # URLs (URLS are found in Source check)
 
 $AppDOrgKey = ""
+$AppDAgentFileName = ""
 # Install command moved inside of the AppDRemoteAccessInstall function
 # $AppDInstallCommand = “msiexec /i “action1_agent($AppDOrgKey).msi” /quiet”
 $AppDUninstallCommand = 'msiexec /uninstall "C:\Windows\Action1\action1_agent.msi" /quiet'
@@ -1104,9 +1104,9 @@ $AppDRemoteAccessExists = "False"
 # VARIABLES D - Status notifications
     $StatusDDetectedExisting = ">>> [ Detected existing $AppDName files in $UserDesktopPath\$ParentFolder\$AppDFolder ]`n"
     $StatusDRemoveExisting = ">>> [ Removed existing $AppDName files in $UserDesktopPath\$ParentFolder\$AppDFolder ]`n"
-    $StatusDCreatedAppFFolder = ">>>> [ Adding new directory $UserDesktopPath\$ParentFolder\$AppDFolder ]`n"
-    $StatusDChangedDirToAppFFolder = ">>>>> [ Changed working directory to $UserDesktopPath\$ParentFolder\$AppDFolder ]`n"
-    $StatusDDownloadApp = ">>>>>> [ Downloading `"$AppDName.msi`" ]`n"
+    $StatusDCreatedAppDFolder = ">>>> [ Adding new directory $UserDesktopPath\$ParentFolder\$AppDFolder ]`n"
+    $StatusDChangedDirToAppDFolder = ">>>>> [ Changed working directory to $UserDesktopPath\$ParentFolder\$AppDFolder ]`n"
+    $StatusDDownloadApp = ">>>>>> [ Downloading agent"
     $StatusDHashCheck = ">>>>>>> [ Checking hash ]`n"
     $StatusDBootUp = ">>>>>>>> [ Booting up `"$AppDName`" ]`n"
     $StatusDReady = ">>>>>>>>> [ $AppDName is Ready for Hunting... ]`n"
@@ -1115,26 +1115,28 @@ $AppDRemoteAccessExists = "False"
 
 $AppDMenuMain = @"
 
-                 ___[ REMOTE ACCESS Main Menu ]___
-                |                                 |
-                |   [IC]  | Individual Clients    |
-                |   [AK]  | AK                    |
-                |  [SYY]  | Suyon Yi              |
-                |   [JG]  | Jason A. Greenberg    |
-                |   [GP]  | Grace S. Park         |     	
-                |   [EW]  | Edmond Wong           |
-                |  [KNA]  | Kim & Associates      |
-                |   [JM]  | Judy Mock             |
-                |   [SB]  | Sand box              |    
-                |   [RR]  | Rapid Response        |
-                |  [REM]  | Remove EDR            |
-                | [Exit]  | Hard Exit             |
-                | [Back]  | Back to Main Menu     |
-                |_________________________________|`n `n
+                            $Source
+                 __[ REMOTE ACCESS MAIN MENU ]__
+                |                               |
+                |   [AK] | AK                   |
+                |   [EW] | EDMOND WONG          |                
+                |   [GP] | GRACE PARK           |
+                |   [IC] | INDIVIDUAL CLIENTS   |
+                |   [JG] | JASON GREENBERG      |     	
+                |   [JM] | JUDY MOCK            |
+                |  [KNA] | KIM & ASSOCIATES     |
+                |  [PMC] | PALISIDES MEDICAL    |
+                |   [RR] | RAPID RESPONSE       |
+                |   [SB] | SANDBOX              |
+                |   [SY] | SUYON YI             |
+                |  [REM] | Remove EDR           |
+                | [Exit] | Hard Exit            |
+                | [Back] | Back to Main Menu    |
+                |_______________________________|`n `n
 "@    
 
 
-function AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL){
+function AppDRemoteAccessInstall($AppDOrgKey, $Source){
   # Check if Remote Access is already installed and files are detected, we throw exception and go to AppDMenu for potential uninstall option
         if (Test-Path "C:\Windows\Action1\action1_agent.exe") {
             Write-Host `n"$StatusBlankSpace [ Remote Access ALREADY EXISTS! ]" -ForegroundColor White -Background DarkRed
@@ -1142,48 +1144,164 @@ function AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL){
             $AppDRemoteAccessExists = "True"
             pause
             # Exit back to AppDMenu
-            AppDMenuMain
+            #AppDMenuMain
         }
         else {
 
-        # ** ADD OTHERS
-        if (($AppDOrgKey -eq "AK") -and ($Source -eq "MAIN SOURCE")){
-            $AppDURLMain = $AppDURLMainAK
-            $AppDHashMain = $AppDHashMainAK
-        }
-        if (($AppDOrgKey -eq "AK") -and ($Source -eq "MIRROR SOURCE")){
-            $AppDURLMirror = $AppDURLMirrorAK
-            $AppDHashMirror= $AppDHashMirrorAK
-        }
-
-
+  # Source check
+        # Main Source will follow this flow
         if ($Source -eq "MAIN SOURCE"){
-            Write-Host "[MAIN SOURCE]: " -ForegroundColor Green -NoNewline; Write-Host $AppDURLMain -ForegroundColor Yellow
-            Write-Host "    [SHA-256]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppDHashMain}" -ForegroundColor Yellow `n 
+            if ($AppDOrgKey -eq "AK"){
+                $AppDURLMain = "https://app.action1.com/agent/bd9e9504-b40b-11ed-9c60-5b71e351ba63/Windows/agent(AK_-_ADAM_KIM).msi"
+                $AppDHashMain = "064768699B50DF63FC34D176B6062FF23D58074639CC4E2550B08B5C33C67AFB"
+                $AppDAgentFileName = "action1_agent(AK_-_ADAM_KIM)"
+            }
+            if ($AppDOrgKey -eq "EW"){
+                $AppDURLMain = "https://app.action1.com/agent/ca8e96b4-32f6-11ee-9ea7-83eb080d2617/Windows/agent(EW_-_EDMOND_WONG).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(EW_-_EDMOND_WONG)"
+            }
+            if ($AppDOrgKey -eq "GP"){
+                $AppDURLMain = "https://app.action1.com/agent/f82c7ce4-9c3c-11ee-92f1-3b9755e10bac/Windows/agent(GP_-_GRACE_PARK).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(GP_-_GRACE_PARK)"
+            }
+            if ($AppDOrgKey -eq "IC"){
+                $AppDURLMain = "https://app.action1.com/agent/f19e6144-afc9-11ee-b2a5-1deb4e8ddb33/Windows/agent(IC-_INDIVIDUAL_CLIENTS).msi"
+                $AppDHashMain = "94222009F399CB90F9221484A0A65CAF3DF6C13F83346CDC6E1AF279E3C63E8E"
+                $AppDAgentFileName = "action1_agent(IC-_INDIVIDUAL_CLIENTS)"
+            }
+            if ($AppDOrgKey -eq "JG"){
+                $AppDURLMain = "https://app.action1.com/agent/a299a104-ec41-11ed-adbb-23da6e95e2ea/Windows/agent(JG_-_JASON_GREENBERG).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(JG_-_JASON_GREENBERG)"
+            }
+            if ($AppDOrgKey -eq "JM"){
+                $AppDURLMain = "https://app.action1.com/agent/cc7510a4-feaf-11ee-ad29-119b83a5aae4/Windows/agent(JM_-_JUDY_MOCK).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(JM_-_JUDY_MOCK)"
+            }
+            if ($AppDOrgKey -eq "KnA"){
+                $AppDURLMain = "https://app.action1.com/agent/69a4c614-c336-11ed-9871-35b181befa3f/Windows/agent(KnA_-_KIM_ASSOCIATES).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(KnA_-_KIM_ASSOCIATES)"
+            }
+            if ($AppDOrgKey -eq "PMC"){
+                $AppDURLMain = "https://app.action1.com/agent/7c20e9a4-b4b7-11ed-a067-bd7ac9f64a19/Windows/agent(PMC_-_PALISADES_MEDICAL_CENTER).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(PMC_-_PALISADES_MEDICAL_CENTER)"
+            }
+            if ($AppDOrgKey -eq "RR"){
+                $AppDURLMain = "https://app.action1.com/agent/e2222381-865e-11ee-9dcf-67aae8813155/Windows/agent(RR_-_RAPID_RESPONSE).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(RR_-_RAPID_RESPONSE)"
+            }
+            if ($AppDOrgKey -eq "SB"){
+                $AppDURLMain = "https://app.action1.com/agent/580d1074-33f5-11ef-95f6-abb932ce4201/Windows/agent(SB_-_SANDBOX).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(SB_-_SANDBOX)"
+            }
+            if ($AppDOrgKey -eq "SY"){
+                $AppDURLMain = "https://app.action1.com/agent/cd55fad3-5a58-11ee-a0f9-916686d13b73/Windows/agent(SY_-_SUYON_YI).msi"
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(SY_-_SUYON_YI)"
+            }
         }
-        if ($Source -eq "MIRROR SOURCE"){
-            Write-Host "[MIRROR SOURCE]: " -ForegroundColor Green -NoNewline; Write-Host $AppDURLMirror -ForegroundColor Yellow
-            Write-Host "      [SHA-256]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppDHashMirror}" -ForegroundColor Yellow `n
+        # Mirror Source will follow this flow
+         if ($Source -eq "MIRROR SOURCE"){
+            if ($AppDOrgKey -eq "AK"){
+                $AppDURLMain = "https://app.action1.com/agent/bd9e9504-b40b-11ed-9c60-5b71e351ba63/Windows/agent(AK_-_ADAM_KIM).msi"
+                $AppDHashMain = "064768699B50DF63FC34D176B6062FF23D58074639CC4E2550B08B5C33C67AFB"
+                $AppDAgentFileName = "action1_agent(AK_-_ADAM_KIM)"
+            }
+            if ($AppDOrgKey -eq "EW"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(EW_-_EDMOND_WONG)"
+            }
+            if ($AppDOrgKey -eq "GP"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(GP_-_GRACE_PARK)"
+            }
+            if ($AppDOrgKey -eq "IC"){
+                $AppDURLMain = ""
+                $AppDHashMain = "94222009F399CB90F9221484A0A65CAF3DF6C13F83346CDC6E1AF279E3C63E8E"
+                $AppDAgentFileName = "action1_agent(IC-_INDIVIDUAL_CLIENTS)"
+            }
+            if ($AppDOrgKey -eq "JG"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(JG_-_JASON_GREENBERG)"
+            }
+            if ($AppDOrgKey -eq "JM"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(JM_-_JUDY_MOCK)"
+            }
+            if ($AppDOrgKey -eq "KnA"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(KnA_-_KIM_ASSOCIATES)"
+            }
+            if ($AppDOrgKey -eq "PMC"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(PMC_-_PALISADES_MEDICAL_CENTER)"
+            }
+            if ($AppDOrgKey -eq "RR"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(RR_-_RAPID_RESPONSE)"
+            }
+            if ($AppDOrgKey -eq "SB"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(SB_-_SANDBOX)"
+            }
+            if ($AppDOrgKey -eq "SY"){
+                $AppDURLMain = ""
+                $AppDHashMain = ""
+                $AppDAgentFileName = "action1_agent(SY_-_SUYON_YI)"
+            }
         }
 
-        # Check for Download request
+        
+        # ** ADD OTHERS
+        #if (($AppDOrgKey -eq "AK" -and ($Source -eq "MAIN SOURCE")){
+        #    $AppDURLMain = $AppDURLMainAK
+        #    $AppDHashMain = $AppDHashMainAK
+        #    $AppDName = $AppDAgentNameAK
+        #    $Source = $Source
+        #}
+        #if (($AppDOrgKey -eq "AK") -and ($Source -eq "MIRROR SOURCE")){
+        #    $AppDURLMirror = $AppDURLMirrorAK
+        #    $AppDHashMirror= $AppDHashMirrorAK
+        #    $AppDName = $AppDAgentNameAK
+        #}
+
+        # Announce source and hash, assign value to variables
         if ($Source -eq "MAIN SOURCE"){
             $global:AppDURLUsed = $AppDURLMain
             $AppDHashUsed = $AppDHashMain
+            Write-Host "[MAIN SOURCE]: " -ForegroundColor Green -NoNewline; Write-Host $AppDURLMain -ForegroundColor Yellow
+            Write-Host "    [SHA-256]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppDHashMain}" -ForegroundColor Yellow `n 
         }
+        
         if ($Source -eq "MIRROR SOURCE"){
             $global:AppDURLUsed = $AppDURLMirror
             $AppDHashUsed = $AppDHashMirror
-        }
+            Write-Host "[MIRROR SOURCE]: " -ForegroundColor Green -NoNewline; Write-Host $AppDURLMirror -ForegroundColor Yellow
+            Write-Host "      [SHA-256]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppDHashMirror}" -ForegroundColor Yellow `n
+        }       
 
         # Download zip file from Repo
-        Write-Host $StatusDDownloadApp -ForegroundColor Green
-        Clear-Variable -Name "Source" -Scope Global
-        Invoke-WebRequest -Uri $AppDURLUsed -OutFile .\$AppDName.msi
+        Write-Host "$StatusDDownloadApp from $Source ]"`n -ForegroundColor Green
+        Invoke-WebRequest -Uri $AppDURLUsed -OutFile .\$AppDAgentFileName
 
         # Grab and check hash
         Write-Host $StatusDHashCheck -ForegroundColor Green
-        $HashDownload = Get-FileHash .\$AppDName.msi | Select-Object -ExpandProperty Hash
+        $HashDownload = Get-FileHash .\$AppDAgentFileName | Select-Object -ExpandProperty Hash
     
 
             # Hash Diff Allow/Deny Progression    
@@ -1192,42 +1310,29 @@ function AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL){
                 Write-Host "  [EXPECTED]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppDHashUsed}" -ForegroundColor Green
                 Write-Host "[DOWNLOADED]: " -ForegroundColor Green -NoNewline; Write-Host "{$HashDownload}" -ForegroundColor Green
                 Write-Host "              |------------------------ [ HASH VALID ] ------------------------|`n" -ForegroundColor Yellow
+                # Change the directory to AppDName
+                set-location "$UserDesktopPath\$ParentFolder\$AppDFolder"
+                Write-Host $StatusDBootUp -ForegroundColor Green
+                # Install starts here
+                Write-Host `n"$StatusBlankSpace[ Deploying Remote Access... ]" -ForegroundColor White -Background DarkRed
+                Write-Host `n""
+                Invoke-Expression "msiexec /i `"$UserDesktopPath\$ParentFolder\$AppDFolder\$AppDAgentFileName`" /quiet"
+                Write-Host "$StatusBlankSpace[ DEPLOYMENT SUCCESS | HOSTNAME: $HostName | ORGAINIZATION: $AppDOrgName ]" -ForegroundColor White -Background DarkRed
+                Write-Host `n""
+                Read-host "Press any key to return to the $AppDName menu"
+                AppDMenuMain
             }
             else {
                 $AppDHashValid = "False"
                 Write-Host "  [EXPECTED]: " -ForegroundColor Green -NoNewline; Write-Host "{$AppDHashUsed}" -ForegroundColor Green
                 Write-Host "[DOWNLOADED]: " -ForegroundColor Green -NoNewline; Write-Host "{$HashDownload}" -ForegroundColor Red
                 Write-Host "              |---------------------- [ HASH INVALID ] ----------------------|`n" -ForegroundColor Red
-                Write-Host "Hash INVALID, URL possibly hijacked or updated. Removed $AppDName.msi, use MIRROR SOURCE for saftey." -ForegroundColor Red
+                Write-Host "Hash INVALID, URL possibly hijacked or updated. Removed $AppDAgentFileName, use MIRROR SOURCE for saftey." -ForegroundColor Red
                 set-location "$UserDesktopPath\$ParentFolder"
                 Remove-Item -Recurse -Force "$UserDesktopPath\$ParentFolder\$AppDFolder"
                 Read-Host "Press any key to return to the main menu"
-            }
-
-            # If hash is valid, WE INSTALL (CHANGE BOTTOM)
-            if ($AppDHashValid -eq "True"){
-                # Change the directory to AppDName
-                set-location "$UserDesktopPath\$ParentFolder\$AppDFolder"
-                $HealthCheck = "True"
-                Write-Host $StatusDBootUp -ForegroundColor Green
-                Write-Host $StatusDReady -ForegroundColor Cyan
-                AppDMenuMain
-            }
-
-            # If hash is invalid, Exit to main menu
-            if ($AppDHashValid -eq "False"){
                 Show-Menu
             }
-
-
-
-            Write-Host `n"$StatusBlankSpace[ Deploying Remote Access... ]" -ForegroundColor White -Background DarkRed
-            Write-Host `n""
-            $AppDInstallCommand = 'msiexec /i “RemoteAccess($AppDOrgKey).msi” /quiet'
-            Invoke-Expression "msiexec /i `"$UserDesktopPath\$ParentFolder\$AppDFolder\RemoteAccessAgent(AK).msi`" /quiet"
-            Write-Host "$StatusBlankSpace[ DEPLOYMENT SUCCESS | HOSTNAME: $HostName | ORGAINIZATION: $AppDOrgName ]" -ForegroundColor White -Background DarkRed
-            Write-Host `n""
-            pause 
         }
 }
 
@@ -1247,24 +1352,19 @@ function StartRemoteAccess($Source){
         Write-Host $StatusChangedDirToParentFolder -ForegroundColor Green
 
         # Check existing Remote Access folder, if exist, we delete for a fresh start.
-        if (Test-Path .\$AppDName) {
+        if (Test-Path .\$AppDFolder) {
             Write-Host $StatusDDetectedExisting -ForegroundColor Green
-            Remove-Item .\$AppDName -Recurse
+            Remove-Item .\$AppDFolder -Recurse
             Write-Host $StatusDRemoveExisting -ForegroundColor Green
         }
 
         # Create new Remote Access Folder, change dir to Remote Access folder
-        $null = New-Item -Path .\ -Name "$AppDName" -ItemType "directory" -Force
+        $null = New-Item -Path .\ -Name "$AppDFolder" -ItemType "directory" -Force
         Write-Host $StatusDCreatedAppDFolder -ForegroundColor Green
-        set-location "$UserDesktopPath\$ParentFolder\$AppDName"
+        set-location "$UserDesktopPath\$ParentFolder\$AppDFolder"
         Write-Host $StatusDChangedDirToAppDFolder -ForegroundColor Green      
 
-        if ($Source -eq "MAIN SOURCE"){
-            AppDMenuMain(MAIN SOURCE)
-        }
-        else{
-            AppDMenuMain(MIRROR SOURCE)
-        }
+        AppDMenuMain($Source)
 }
 
 
@@ -1302,84 +1402,69 @@ function AppDRemoteAccessRemove {
 
 
 function AppDMenuMain($Source){      
-    clear
+    
     do
     {  
-        $selectionAppD = Read-Host $BannerD $AppDMenuMain "$AppDName main menu, select org ,waiting for your input"
+        $selectionAppD = Read-Host $BannerD $AppDMenuMain "$AppDName $Source main menu, select org, waiting for your input"
         switch ($selectionAppD)
         {
-            'IC' {
-                $AppDOrgKey = "IC"
-                $AppDOrgName = "Individual Clients"
-                $AppDAgentURL = "https://app.action1.com/agent/f19e6144-afc9-11ee-b2a5-1deb4e8ddb33/Windows/agent(IC-_Individual_Clients).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
-            }
+            
             'AK' {
                 $AppDOrgKey = "AK"
-                $AppDOrgName = "Adam Kim"
-                AppDRemoteAccessInstall($AppDOrgKey,$Source)
-                Show-Menu
-            }
-            'SYY' {
-                $AppDOrgKey = "SYY"
-                $AppDOrgName = "Suyon Yi"
-                $AppDAgentURL = "https://app.action1.com/agent/cd55fad3-5a58-11ee-a0f9-916686d13b73/Windows/agent(SYY_-_Suyon_YI).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
-            }
-            'JG' {
-                $AppEOrgKey = "JG"
-                $AppEOrgName = "Law Office of Jason A. Greenberg"
-                $AppDAgentURL = "https://app.action1.com/agent/a299a104-ec41-11ed-adbb-23da6e95e2ea/Windows/agent(JG_-_Jason_A_Greenberg_).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
-            }
-            'GP' {
-                $AppDOrgKey = "GP"
-                $AppDOrgName = "Grace S. Park"
-                $AppDAgentURL = "https://app.action1.com/agent/f82c7ce4-9c3c-11ee-92f1-3b9755e10bac/Windows/agent(GP_-_GRACE_PARK).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
+                $AppDOrgName = "ADAM KIM"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
             }
             'EW' {
                 $AppDOrgKey = "EW"
-                $AppDOrgName = "Edmond Wong"
-                $AppDAgentURL = "https://app.action1.com/agent/ca8e96b4-32f6-11ee-9ea7-83eb080d2617/Windows/agent(EW_-_Edmond_Wong).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
+                $AppDOrgName = "EDMOND WONG"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
             }
-            'KnA' {
-                $AppDOrgKey = "KnA"
-                $AppDOrgName = "Kim & Associates"
-                $AppDAgentURL = "https://app.action1.com/agent/69a4c614-c336-11ed-9871-35b181befa3f/Windows/agent(K_A_-_Kim___Associates).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
+            'GP' {
+                $AppDOrgKey = "GP"
+                $AppDOrgName = "GRACE PARK"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
+            }
+            'IC' {
+                $AppDOrgKey = "IC"
+                $AppDOrgName = "INDIVIDUAL CLIENTS"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
+            }
+            'JG' {
+                $AppEOrgKey = "JG"
+                $AppDOrgName = "JASON GREENBERG"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
             }
             'JM' {
                 $AppDOrgKey = "JM"
-                $AppDOrgName = "Judy Mock Law Office"
-                $AppDAgentURL = "https://app.action1.com/agent/cc7510a4-feaf-11ee-ad29-119b83a5aae4/Windows/agent(JM_-_JUDY_MOCK).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
+                $AppDOrgName = "JUDY MOCK"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
             }
-            'SB' {
-                $AppDOrgKey = "SB"
-                $AppDOrgName = "Sand Box By CyberSeidon"
-                $AppDAgentURL = "https://app.action1.com/agent/580d1074-33f5-11ef-95f6-abb932ce4201/Windows/agent(SB_-_SANDBOX).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
+            'KnA' {
+                $AppDOrgKey = "KnA"
+                $AppDOrgName = "KIM & ASSOCIATES"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
+            }
+            'PMC' {
+                $AppDOrgKey = "PMC"
+                $AppDOrgName = "PALISIDES MEDICAL CENTER"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
             }
             'RR' {
                 $AppDOrgKey = "RR"
-                $AppDOrgName = "Rapid Response"
-                $AppDAgentURL = "https://app.action1.com/agent/e2222381-865e-11ee-9dcf-67aae8813155/Windows/agent(RR_-_Rapid_Reponse).msi"
-                AppDRemoteAccessInstall($AppDOrgKey,$AppDAgentURL)
-                Show-Menu
+                $AppDOrgName = "RAPID RESPONSE"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
+            }
+            'SB' {
+                $AppDOrgKey = "SB"
+                $AppDOrgName = "SANDBOX"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
+            }
+            'SY' {
+                $AppDOrgKey = "SY"
+                $AppDOrgName = "SUYON YI"
+                AppDRemoteAccessInstall $AppDOrgKey $Source
             }
             'REM' {
-                $AppDOrgKey = "REM"
-                $AppDOrgName = "Remove Remote Acccess"
                 AppDRemoteAccessRemove
                 Clear
                 Show-Menu
@@ -1507,7 +1592,7 @@ function StartEDR{
                 $AppEOrgKey = "AK"
                 $AppEOrgName = "Adam Kim"
                 AppFEDRInstall($AppEOrgkey)
-                Show-Menu
+                
             }
             'SYY' {
                 $AppEOrgKey = "SYY"
