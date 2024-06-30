@@ -1266,20 +1266,6 @@ function AppDRemoteAccessInstall($AppDOrgKey, $Source){
             }
         }
 
-        
-        # ** ADD OTHERS
-        #if (($AppDOrgKey -eq "AK" -and ($Source -eq "MAIN SOURCE")){
-        #    $AppDURLMain = $AppDURLMainAK
-        #    $AppDHashMain = $AppDHashMainAK
-        #    $AppDName = $AppDAgentNameAK
-        #    $Source = $Source
-        #}
-        #if (($AppDOrgKey -eq "AK") -and ($Source -eq "MIRROR SOURCE")){
-        #    $AppDURLMirror = $AppDURLMirrorAK
-        #    $AppDHashMirror= $AppDHashMirrorAK
-        #    $AppDName = $AppDAgentNameAK
-        #}
-
         # Announce source and hash, assign value to variables
         if ($Source -eq "MAIN SOURCE"){
             $global:AppDURLUsed = $AppDURLMain
